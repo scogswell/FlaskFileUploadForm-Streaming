@@ -1,6 +1,6 @@
 # README
 
- A "complete" demo program flow example of using Flask to upload a file, with a form for additional information and maintaining `flask-wtf`/`wtforms` validation.  This uses `streaming-form-data` to write the incoming uploaded file directly to disk instead of letting werkzeug buffer what could potentially be a very large (GB) file.  This keeps the progress bar hanging around at 100% at a potentially very long time as werkzeug  transfers the form data to the flask routine, and then the flask routine saves it.  When the bar is 100% it's done. 
+ A "complete" demo program flow example of using Flask to upload a file, with a form for additional information and maintaining `flask-wtf`/`wtforms` validation.  This uses `streaming-form-data` (https://github.com/siddhantgoel/streaming-form-data) to write the incoming uploaded file directly to disk instead of letting werkzeug buffer what could potentially be a very large (GB) file.  This keeps the progress bar hanging around at 100% at a potentially very long time as werkzeug  transfers the form data to the flask routine, and then the flask routine saves it.  When the bar is 100% it's done. 
 
 This is an expansion of my other example https://github.com/scogswell/FlaskFIleUploadForm.git
 
