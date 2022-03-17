@@ -1,0 +1,42 @@
+server {
+    # listen on port 80 (http)
+    listen 80;
+    server_name _;
+    location / {
+        # redirect any requests to the same URL but on https
+        return 301 https://$host$request_uri;
+    }
+}
+server {
+    # listen on port 443 (https)
+    listen 443 ssl;
+    server_name _;
+
+    client_max_body_size 0M;
+    proxy_read_timeout 3600;
+
+    # location of the self-signed SSL certificate
+    # openssl req -new -newkey rsa:4096 -days 365 -nodes -x509 -keyout certs/key.pem -out certs/cert.pem
+    # https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-xvii-deployment-on-linux
+    ssl_certificate /home/cogswell/webplonk/certs/cert.pem;
+    ssl_certificate_key /home/cogswell/webplonk/certs/key.pem;
+
+    # write access and error logs to /var/log
+    access_log /var/log/progress_access.log;
+    error_log /var/log/progress_error.log;
+
+    location / {
+        # forward application requests to the gunicorn server
+        proxy_pass http://localhost:8000;
+        proxy_redirect off;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Sendfile-Type X-Accel-Redirect;
+	# comment this line out to watch nginx buffer the entire POST 
+	# request before passing it to gunicorn 
+        proxy_request_buffering off;
+    }
+}
+
+

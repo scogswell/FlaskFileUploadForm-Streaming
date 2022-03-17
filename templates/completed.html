@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+    integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+  <title>Upload Complete</title>
+</head>
+
+{# just show some information about your uploaded file now that it has completed. #}
+{# at this point you could do database work to store your information or whatever #}
+{# do what you want I'm not your dad #}
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <div class="mb-3 mt-3">
+          <h1>Upload is Complete</h1>
+          <b>Name:</b> {{ form.name.data }} <br>
+          <b>Email</b>: {{ form.email.data }}<br>
+          <b>original filename:</b> {{ form.original_filename.data }}<br>
+          <b>filename in uploads directory:</b> {{ form.saved_filename.data}}<br>
+          <a href="{{ url_for('download_file', uuid=form.saved_filename.data, filename=form.original_filename.data) }}">Download the file</a><br>
+          <a href="{{ url_for('upload_file') }}">Upload another</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

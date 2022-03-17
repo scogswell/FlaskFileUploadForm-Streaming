@@ -1,0 +1,25 @@
+server {
+    # listen on port 80 (http)
+    listen 80 default_server;
+    server_name _;
+
+    client_max_body_size 0M;
+    proxy_read_timeout 3600;
+
+    # write access and error logs to /var/log
+    access_log /var/log/progress_access.log;
+    error_log /var/log/progress_error.log;
+
+    location / {
+        # forward application requests to the gunicorn server
+        proxy_pass http://localhost:8000;
+        proxy_redirect off;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+	proxy_set_header X-Sendfile-Type X-Accel-Redirect;
+	# comment this line out to watch nginx buffer the entire POST 
+	# request before passing it to gunicorn 
+        proxy_request_buffering off;
+    }
+}
